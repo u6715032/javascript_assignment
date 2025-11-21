@@ -1,35 +1,45 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JavaScript Assignment 2</title>
+  </head>
   <body>
     <h3>Today Fruits</h3>
     <ul id="fruit-list"></ul>
-    <hr/>
+ 
+    <hr />
+ 
     <h3>Today Vegetables</h3>
     <ul id="veg-list"></ul>
-
+ 
     <script>
-      // Fruits array
+      // arrays of items
       const fruits = ["Apple", "Banana", "Orange", "Mango", "Strawberry"];
-
-      // Vegetables array
-      const vegetables = ["Carrot", "Broccoli", "Spinach", "Tomato", "Cucumber"];
-
-      // Get the UL elements
+      const vegetables = [
+        "Carrot",
+        "Broccoli",
+        "Spinach",
+        "Tomato",
+        "Cucumber",
+      ];
+ 
+      // get the <ul> elements
       const fruitList = document.getElementById("fruit-list");
       const vegList = document.getElementById("veg-list");
-
-      // Add fruits to list
-      fruits.forEach(function(fruit) {
-        const li = document.createElement("li");
-        li.textContent = fruit;
-        fruitList.appendChild(li);
-      });
-
-      // Add vegetables to list
-      vegetables.forEach(function(veg) {
-        const li = document.createElement("li");
-        li.textContent = veg;
-        vegList.appendChild(li);
-      });
+ 
+      // helper function to add items to a list
+      function addItems(listElement, items) {
+        items.forEach(function (item) {
+          const li = document.createElement("li");
+          li.textContent = item;
+          listElement.appendChild(li);
+        });
+      }
+ 
+      // add fruits and vegetables to their lists
+      addItems(fruitList, fruits);
+      addItems(vegList, vegetables);
     </script>
   </body>
 </html>
