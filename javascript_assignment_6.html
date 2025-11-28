@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Monster Detail</title>
+    
+  </head>
+  <body>
+    <div class="card">
+      <h3>Monster Detail</h3>
+
+      <div class="row"><div>Select Monster:</div></div>
+      <div class="row">
+        <select id="monster-list" aria-label="Select monster">
+          <!-- options added by script -->
+        </select>
+      </div>
+
+      <hr />
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>ID</th>
+            <td id="td-monster-id" class="empty">-</td>
+          </tr>
+          <tr>
+            <th>Name</th>
+            <td id="td-monster-name" class="empty">-</td>
+          </tr>
+          <tr>
+            <th>HP</th>
+            <td id="td-monster-hp" class="empty">-</td>
+          </tr>
+          <tr>
+            <th>EXP</th>
+            <td id="td-monster-exp" class="empty">-</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      // Monster list as array of JSON objects
+      const monsters = [
+        { "id": 1, "name": "Fire Dragon", "hp": 150, "exp": 85 },
+        { "id": 2, "name": "Ice Wolf", "hp": 75, "exp": 45 },
+        { "id": 3, "name": "Shadow Goblin", "hp": 40, "exp": 25 },
+        { "id": 4, "name": "Lightning Phoenix", "hp": 200, "exp": 120 },
+        { "id": 5, "name": "Earth Golem", "hp": 180, "exp": 95 },
+        { "id": 6, "name": "Poison Spider", "hp": 60, "exp": 35 },
+        { "id": 7, "name": "Wind Eagle", "hp": 90, "exp": 55 },
+        { "id": 8, "name": "Dark Skeleton", "hp": 65, "exp": 40 },
+        { "id": 9, "name": "Crystal Unicorn", "hp": 120, "exp": 75 },
+        { "id": 10, "name": "Lava Titan", "hp": 250, "exp": 150 }
+      ];
+
+      // DOM refs
+      const selectEl = document.getElementById('monster-list');
+      const tdId = document.getElementById('td-monster-id');
+      const tdName = document.getElementById('td-monster-name');
+      const tdHp = document.getElementById('td-monster-hp');
+      const tdExp = document.getElementById('td-monster-exp');
+
+      // helper: clear table content
+      function clearTable() {
+        tdId.textContent = '';
+        tdName.textContent = '';
+        tdHp.textContent = '';
+        tdExp.textContent = '';
+
+        // show placeholder dash and styling
+        [tdId, tdName, tdHp, tdExp].forEach(td => {
+          td.classList.add('empty');
+          td.textContent = '-';
+        });
+      }
+
+      // helper: fill table with a monster object
+      function fillTable(monster) {
+        tdId.textContent = monster.id;
+        tdName.textContent = monster.name;
+        tdHp.textContent = monster.hp;
+        tdExp.textContent = monster.exp;
+
+        [tdId, tdName, tdHp, tdExp].forEach(td => td.classList.remove('empty'));
+      }
+
+      // populate select: first default "-" then monsters
+      function populateSelect() {
+        // default option
+        const defaultOption = document.createElement('option');
+        defaultOption.value = ''; // empty value represents default
+        defaultOption.textContent = '-';
+        selectEl.appendChild(defaultOption);
+
+        // create options from monsters array
+        monsters.forEach(mon => {
+          const opt = document.createElement('option');
+          // use id as value so selecting is unambiguous
+          opt.value = String(mon.id);
+          // use textContent (not innerHTML) — safer
+          opt.textContent = mon.name;
+          selectEl.appendChild(opt);
+        });
+
+        // set default selected
+        selectEl.value = '';
+      }
+
+      // event handler for change
+      function onMonsterChange(e) {
+        const val = e.target.value;
+        if (!val) {
+          // default selected -> clear
+          clearTable();
+          return;
+        }
+        const id = parseInt(val, 10);
+        // find monster by id
+        const monster = monsters.find(m => m.id === id);
+        if (monster) {
+          fillTable(monster);
+        } else {
+          // safety fallback
+          clearTable();
+        }
+      }
+
+      // initialize
+      populateSelect();
+      clearTable();
+      selectEl.addEventListener('change', onMonsterChange);
+    </script>
+  </body>
+</html>
